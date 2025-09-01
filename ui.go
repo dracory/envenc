@@ -8,8 +8,8 @@ import (
 
 	"github.com/dracory/api"
 	"github.com/dracory/cdn"
+	"github.com/dracory/hb"
 	"github.com/dracory/websrv"
-	"github.com/gouniverse/hb"
 
 	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
