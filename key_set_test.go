@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/gouniverse/envenc"
+	"github.com/dracory/envenc"
 )
 
 func setupTestVault(t *testing.T) (string, string) {

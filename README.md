@@ -1,8 +1,8 @@
 # envenc 
 
-<a href="https://gitpod.io/#https://github.com/gouniverse/envenc" style="float:right:"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
+<a href="https://gitpod.io/#https://github.com/dracory/envenc" style="float:right:"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
 
-![tests](https://github.com/gouniverse/envenc/workflows/tests/badge.svg)
+![tests](https://github.com/dracory/envenc/workflows/tests/badge.svg)
 
 ## Description
 
@@ -98,7 +98,7 @@ $> cp envenc.exe %USERPROFILE%\.local\bin
 - Install the module with `go get`
 
 ```bash
-$> go get github.com/gouniverse/envenc
+$> go get github.com/dracory/envenc
 ```
 
 

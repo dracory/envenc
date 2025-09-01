@@ -1,4 +1,4 @@
-module github.com/gouniverse/envenc
+module github.com/dracory/envenc
 
 go 1.23.0
 

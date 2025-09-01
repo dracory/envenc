@@ -347,7 +347,7 @@ package envenc
 // 	cfmt.Infoln("")
 // 	cfmt.Infoln("For more information visit:")
 // 	cfmt.Infoln("")
-// 	cfmt.Infoln("https://github.com/gouniverse/envenc")
+// 	cfmt.Infoln("https://github.com/dracory/envenc")
 // }
 
 // func cliAskPassword() (string, error) {
