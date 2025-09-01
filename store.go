@@ -1,6 +1,6 @@
 package envenc
 
-import "github.com/gouniverse/dataobject"
+import "github.com/dracory/dataobject"
 
 // store represents the vault
 //

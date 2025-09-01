@@ -6,10 +6,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gouniverse/api"
-	"github.com/gouniverse/cdn"
+	"github.com/dracory/api"
+	"github.com/dracory/cdn"
+	"github.com/dracory/websrv"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/webserver"
+
 	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
 )
@@ -23,7 +24,7 @@ func (u *ui) Run(args []string) {
 	address := lo.ValueOr(mappedArgs, "address", "127.0.0.1:38080")
 	cfmt.Infoln("Listening on: http://" + address)
 
-	s := webserver.New(address, func(w http.ResponseWriter, r *http.Request) {
+	s := websrv.New(address, func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(u.router(w, r)))
 	})
 
