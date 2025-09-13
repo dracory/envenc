@@ -1,6 +1,6 @@
 package envenc
 
-import "github.com/gouniverse/crypto"
+import "github.com/dracory/crypto"
 
 func Encrypt(input string, password string) (string, error) {
 	xorEncString := crypto.XorFortifiedEncrypt(input, password)

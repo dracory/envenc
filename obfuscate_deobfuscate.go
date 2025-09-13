@@ -1,7 +1,7 @@
 package envenc
 
 import (
-	"github.com/gouniverse/crypto"
+	"github.com/dracory/crypto"
 )
 
 const obf = "YT@6toe#e0hIx7pMHyBcU^YsAucNI2Jm2OF6nNjjXR$2qHf&&dqBj6USPhX71*M1W^dpC0DwF1kRm$ntGqe$GuvH$H#7sCWsDD"

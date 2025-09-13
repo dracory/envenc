@@ -2,6 +2,8 @@ github.com/dracory/api v1.7.0 h1:BhewBbdkgKbsYdM7w3pnlczLNYoVXOryw/ez8CyfDQA=
 github.com/dracory/api v1.7.0/go.mod h1:kMSHvN33IYwG0x+tVQwsq2PlmMcl2hGqlPjdYv3d4aw=
 github.com/dracory/cdn v1.8.0 h1:3GC1qtqCMnamw/6OmeXkh5F8pn6Ab2CduRTVKEPP4Vg=
 github.com/dracory/cdn v1.8.0/go.mod h1:A5Dhmy44OsG5+hhdcXqpYtoBLYjbDP3I5XXa7ta54a8=
+github.com/dracory/crypto v0.3.0 h1:27/GsK6PH3Qic6UScUT2hXT/5+n+7WWwOE/9g79q9kU=
+github.com/dracory/crypto v0.3.0/go.mod h1:hs0kPA9s1M6s7kgGwzjZJn/hQMdi5sPJ3FXP+2oPEck=
 github.com/dracory/dataobject v1.6.0 h1:k9kVYthGqK3giZvG/HMF9wGjwY9sRLv8XJ543nsUTiE=
 github.com/dracory/dataobject v1.6.0/go.mod h1:eo0pRMmHAEpWKQo29F6TTs43Cpp7J5QRj9wiJ0eQrJ0=
 github.com/dracory/hb v1.88.0 h1:PpxQ9IGTy/L8fZ2iQxTUhieB6u16sluuw/TNxYUcHPs=
@@ -11,8 +13,6 @@ github.com/dracory/uid v1.8.0/go.mod h1:ldOjQLmGsQO4/oRIp5dpgajX3Qf1FI4QMPD34lXS
 github.com/dracory/websrv v0.1.0 h1:Q0O+7CeZqp+J3pjAXlgLf4x0TDOiy8SJ/GhPymvjcL8=
 github.com/dracory/websrv v0.1.0/go.mod h1:V/NvK8MdSaN8vEZUXSaKYOLZdKd5Rt6ewVXv33jRg60=
 github.com/fatih/color v1.6.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
-github.com/gouniverse/crypto v0.2.0 h1:7ppqn9FrwrlC6nTfgVBnEop5cKBFNEZyP5yXoUH7MZ0=
-github.com/gouniverse/crypto v0.2.0/go.mod h1:uWfzSf1dsYyij6yrVTdxuLFfLZIvSJu24+x3sj+DLXU=
 github.com/logrusorgru/aurora v2.0.3+incompatible h1:tOpm7WcpBTn4fjmVfgpQq0EfczGlG91VSDkswnjF5A8=
 github.com/logrusorgru/aurora v2.0.3+incompatible/go.mod h1:7rIyQOR62GCctdiQpZ/zOJlFyk6y+94wXzv6RNZgaR4=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
