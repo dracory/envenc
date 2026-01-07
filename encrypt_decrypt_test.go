@@ -1,6 +1,8 @@
 package envenc
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestEncryptDoesNotFail(t *testing.T) {
 	// Arrange
