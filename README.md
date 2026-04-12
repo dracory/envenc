@@ -72,6 +72,14 @@ The web interface is simple and straightforward to use.
 
 ## Installation
 
+### Installation via go install (recommended)
+
+```bash
+go install github.com/dracory/envenc/envenc@latest
+```
+
+The binary will be installed to `$GOPATH/bin` (typically `~/go/bin` or `%USERPROFILE%\go\bin`) as `envenc`.
+
 ### Installation as a standalone executable (binary)
 
 - Download the binary for your platform from the latest release

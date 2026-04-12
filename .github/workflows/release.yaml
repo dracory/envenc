@@ -32,5 +32,5 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: "https://dl.google.com/go/go1.23.2.linux-amd64.tar.gz"
-        project_path: "./cmd/"
+        project_path: "./envenc/"
         binary_name: "envenc"
