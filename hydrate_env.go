@@ -26,7 +26,7 @@ func HydrateEnvFromFile(vaultFilePath, vaultPassword string) error {
 		return errors.New("vault password is required")
 	}
 
-	keys, err := loadKeysFromFile(vaultFilePath, vaultPassword)
+	keys, err := LoadKeysFromFile(vaultFilePath, vaultPassword)
 	if err != nil {
 		return err
 	}
@@ -54,36 +54,12 @@ func HydrateEnvFromString(vaultContent, vaultPassword string) error {
 		return errors.New("vault password is required")
 	}
 
-	keys, err := loadKeysFromString(vaultContent, vaultPassword)
+	keys, err := LoadKeysFromString(vaultContent, vaultPassword)
 	if err != nil {
 		return err
 	}
 
 	return applyEnv(keys)
-}
-
-// loadKeysFromFile reads and decrypts keys from an encrypted vault file.
-// It returns the decrypted key/value map or an error if the file does not
-// exist, cannot be read, or decryption fails.
-func loadKeysFromFile(vaultFilePath, vaultPassword string) (map[string]string, error) {
-	if !fileExists(vaultFilePath) {
-		return nil, errors.New("Vault file not found: " + vaultFilePath)
-	}
-	keys, err := KeyListFromFile(vaultFilePath, vaultPassword)
-	if err != nil {
-		return nil, err
-	}
-	return keys, nil
-}
-
-// loadKeysFromString decrypts keys from the provided encrypted vault content
-// string and returns the resulting key/value map.
-func loadKeysFromString(vaultContent, vaultPassword string) (map[string]string, error) {
-	keys, err := KeyListFromString(vaultContent, vaultPassword)
-	if err != nil {
-		return nil, err
-	}
-	return keys, nil
 }
 
 // applyEnv writes the provided key/value pairs into the process environment.
