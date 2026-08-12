@@ -1,6 +1,4 @@
-# envenc 
-
-<a href="https://gitpod.io/#https://github.com/dracory/envenc" style="float:right:"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
+# envenc
 
 ![tests](https://github.com/dracory/envenc/workflows/tests/badge.svg)
 
