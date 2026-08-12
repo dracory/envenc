@@ -3,12 +3,12 @@ package envenc
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"path/filepath"
 	"sort"
 	"strings"
 	"syscall"
 
-	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
 	"golang.org/x/term"
 )
@@ -49,13 +49,13 @@ func (c *Cli) UI(args []string) {
 	vaultPathOptional, errorMessage := c.FindVaultPathFromArgs(args)
 
 	if errorMessage != "" {
-		cfmt.Errorln(errorMessage)
+		slog.Error(errorMessage)
 		return
 	}
 
 	if vaultPathOptional != "" {
 		if !fileExists(vaultPathOptional) {
-			cfmt.Errorln("The vault file does not exist")
+			slog.Error("The vault file does not exist")
 			return
 		}
 	}
@@ -68,28 +68,28 @@ func (c *Cli) Encrypt(args []string) {
 	input, err := c.askString("Enter string to encrypt:")
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	password, err := c.askString("Enter password:")
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	enc, err := Encrypt(input, password)
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Infoln("The encrypted string is:")
-	cfmt.Successln(enc)
+	slog.Info("The encrypted string is:")
+	slog.Info(enc)
 }
 
 // Decrypt decrypts a string
@@ -97,83 +97,83 @@ func (c *Cli) Decrypt(args []string) {
 	input, err := c.askString("Enter string to decrypt:")
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	password, err := c.askString("Enter password:")
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	dec, err := Decrypt(input, password)
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Infoln("The decrypted string is:")
-	cfmt.Successln(dec)
+	slog.Info("The decrypted string is:")
+	slog.Info(dec)
 }
 
 func (c *Cli) Obfuscate(args []string) {
 	input, err := c.askString("Enter string to obfuscate:")
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	obf, err := Obfuscate(input)
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	deObf, err := Deobfuscate(obf)
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	if input != deObf {
-		cfmt.Errorln("Sorry, this string is not supported.")
+		slog.Error("Sorry, this string is not supported.")
 		return
 	}
 
-	cfmt.Infoln("The obfuscated string is:")
-	cfmt.Successln(obf)
+	slog.Info("The obfuscated string is:")
+	slog.Info(obf)
 }
 
 func (c *Cli) Deobfuscate(args []string) {
 	input, err := c.askString("Enter string to deobfuscate:")
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
 	deObf, err := Deobfuscate(input)
 
 	if err != nil {
-		cfmt.Errorln("There was an error:")
-		cfmt.Errorln(err)
+		slog.Error("There was an error:")
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Infoln("The deobfuscated string is:")
-	cfmt.Successln(deObf)
+	slog.Info("The deobfuscated string is:")
+	slog.Info(deObf)
 }
 
 // VaultKeyList lists the keys in the vault
@@ -193,7 +193,7 @@ func (c *Cli) VaultKeyList(args []string) {
 	c.vaultPath, c.errorMessage = c.FindVaultPathFromArgs(args)
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
@@ -201,7 +201,7 @@ func (c *Cli) VaultKeyList(args []string) {
 		c.vaultPath, c.errorMessage = c.AskVaultPath()
 
 		if c.errorMessage != "" {
-			cfmt.Errorln(c.errorMessage)
+			slog.Error(c.errorMessage)
 			return
 		}
 	}
@@ -209,38 +209,38 @@ func (c *Cli) VaultKeyList(args []string) {
 	c.vaultPassword, c.errorMessage = c.AskVaultPassword()
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
-	cfmt.Infoln("Listing keys in vault: " + c.vaultPath)
-	cfmt.Infoln("")
+	slog.Info("Listing keys in vault: " + c.vaultPath)
+	slog.Info("")
 
 	data, err := KeyListFromFile(c.vaultPath, c.vaultPassword)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	if len(data) == 0 {
-		cfmt.Successln("Key list is empty!")
-		cfmt.Successln("")
+		slog.Info("Key list is empty!")
+		slog.Info("")
 		return
 	}
 
-	cfmt.Successln("Total keys: ", len(data))
-	cfmt.Successln("")
+	slog.Info(fmt.Sprintf("Total keys: %d", len(data)))
+	slog.Info("")
 
 	keys := lo.Keys(data)
 
 	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 
 	lo.ForEach(keys, func(key string, _ int) {
-		cfmt.Successln(key, " = ", data[key])
+		slog.Info(fmt.Sprintf("%s = %s", key, data[key]))
 	})
 
-	cfmt.Successln("")
+	slog.Info("")
 }
 
 // VaultKeyGet gets a key from the vault
@@ -261,7 +261,7 @@ func (c *Cli) VaultKeyGet(args []string) {
 	c.vaultPath, c.errorMessage = c.FindVaultPathFromArgs(args)
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
@@ -269,7 +269,7 @@ func (c *Cli) VaultKeyGet(args []string) {
 		c.vaultPath, c.errorMessage = c.AskVaultPath()
 
 		if c.errorMessage != "" {
-			cfmt.Errorln(c.errorMessage)
+			slog.Error(c.errorMessage)
 			return
 		}
 	}
@@ -277,50 +277,50 @@ func (c *Cli) VaultKeyGet(args []string) {
 	c.vaultPassword, c.errorMessage = c.AskVaultPassword()
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
 	keyName, errorMessage := c.AskKeyName()
 
 	if errorMessage != "" {
-		cfmt.Errorln(errorMessage)
+		slog.Error(errorMessage)
 		return
 	}
 
 	_, err := KeyListFromFile(c.vaultPath, c.vaultPassword)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	keyExists, err := KeyExists(c.vaultPath, c.vaultPassword, keyName)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	if !keyExists {
-		cfmt.Errorln("Key does not exist!")
+		slog.Error("Key does not exist!")
 		return
 	}
 
 	keyValue, err := KeyGet(c.vaultPath, c.vaultPassword, keyName)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	if keyValue == "" {
-		cfmt.Successln("Key value is empty!")
+		slog.Info("Key value is empty!")
 		return
 	}
 
-	cfmt.Infoln("The value of the key is:")
-	cfmt.Successln(keyValue)
+	slog.Info("The value of the key is:")
+	slog.Info(keyValue)
 }
 
 // VaultKeyRemove removes a key from the vault
@@ -341,7 +341,7 @@ func (c *Cli) VaultKeyRemove(args []string) {
 	c.vaultPath, c.errorMessage = c.FindVaultPathFromArgs(args)
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
@@ -349,7 +349,7 @@ func (c *Cli) VaultKeyRemove(args []string) {
 		c.vaultPath, c.errorMessage = c.AskVaultPath()
 
 		if c.errorMessage != "" {
-			cfmt.Errorln(c.errorMessage)
+			slog.Error(c.errorMessage)
 			return
 		}
 	}
@@ -357,44 +357,44 @@ func (c *Cli) VaultKeyRemove(args []string) {
 	c.vaultPassword, c.errorMessage = c.AskVaultPassword()
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
 	keyName, errorMessage := c.AskKeyName()
 
 	if errorMessage != "" {
-		cfmt.Errorln(errorMessage)
+		slog.Error(errorMessage)
 		return
 	}
 
 	_, err := KeyListFromFile(c.vaultPath, c.vaultPassword)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	keyExists, err := KeyExists(c.vaultPath, c.vaultPassword, keyName)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	if !keyExists {
-		cfmt.Errorln("Key does not exist!")
+		slog.Error("Key does not exist!")
 		return
 	}
 
 	err = KeyRemove(c.vaultPath, c.vaultPassword, keyName)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Successln("Key removed!")
+	slog.Info("Key removed!")
 }
 
 // VaultKeySet sets a key in the vault
@@ -419,7 +419,7 @@ func (c *Cli) VaultKeySet(args []string) {
 	c.vaultPath, c.errorMessage = c.FindVaultPathFromArgs(args)
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
@@ -427,7 +427,7 @@ func (c *Cli) VaultKeySet(args []string) {
 		c.vaultPath, c.errorMessage = c.AskVaultPath()
 
 		if c.errorMessage != "" {
-			cfmt.Errorln(c.errorMessage)
+			slog.Error(c.errorMessage)
 			return
 		}
 	}
@@ -435,40 +435,40 @@ func (c *Cli) VaultKeySet(args []string) {
 	c.vaultPassword, c.errorMessage = c.AskVaultPassword()
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
 	_, err := KeyListFromFile(c.vaultPath, c.vaultPassword)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
 	keyName, errorMessageKey := c.AskKeyName()
 
 	if errorMessageKey != "" {
-		cfmt.Errorln(errorMessageKey)
+		slog.Error(errorMessageKey)
 		return
 	}
 
 	keyValue, errorMessageValue := c.AskKeyValue()
 
 	if errorMessageValue != "" {
-		cfmt.Errorln(errorMessageValue)
+		slog.Error(errorMessageValue)
 		return
 	}
 
 	err = KeySet(c.vaultPath, c.vaultPassword, keyName, keyValue)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Successln("key set successfully!")
-	cfmt.Successln("")
+	slog.Info("key set successfully!")
+	slog.Info("")
 }
 
 // VaultInit initializes a new vault file
@@ -488,7 +488,7 @@ func (c *Cli) VaultInit(args []string) {
 	c.vaultPath, c.errorMessage = c.FindVaultPathFromArgs(args)
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
@@ -496,7 +496,7 @@ func (c *Cli) VaultInit(args []string) {
 		c.vaultPath, c.errorMessage = c.AskVaultPath()
 
 		if c.errorMessage != "" {
-			cfmt.Errorln(c.errorMessage)
+			slog.Error(c.errorMessage)
 			return
 		}
 	}
@@ -504,18 +504,18 @@ func (c *Cli) VaultInit(args []string) {
 	c.vaultPassword, c.errorMessage = c.AskVaultPasswordWithConfirm()
 
 	if c.errorMessage != "" {
-		cfmt.Errorln(c.errorMessage)
+		slog.Error(c.errorMessage)
 		return
 	}
 
 	err := Init(c.vaultPath, c.vaultPassword)
 
 	if err != nil {
-		cfmt.Errorln(err)
+		slog.Error(err.Error())
 		return
 	}
 
-	cfmt.Successln("Vault initialized successfully at " + c.vaultPath)
+	slog.Info("Vault initialized successfully at " + c.vaultPath)
 }
 
 // AskVaultPassword asks the user to enter a password
@@ -531,7 +531,7 @@ func (c *Cli) AskVaultPassword() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	if password == "" {
 		return "", "- Password cannot be empty"
@@ -555,7 +555,7 @@ func (c *Cli) AskVaultPasswordWithConfirm() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	if password == "" {
 		return "", "- Password cannot be empty"
@@ -567,7 +567,7 @@ func (c *Cli) AskVaultPasswordWithConfirm() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	if password != passwordConfirm {
 		return "", "- Passwords do not match"
@@ -591,7 +591,7 @@ func (c *Cli) AskVaultPath() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	if filePath == "" {
 		return "", "- File path cannot be empty"
@@ -620,7 +620,7 @@ func (c *Cli) AskKeyName() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	if keyName == "" {
 		return "", "- Key name cannot be empty"
@@ -646,13 +646,13 @@ func (c *Cli) AskKeyValue() (string, errorMessage string) {
 		return "", err.Error()
 	}
 
-	cfmt.Infoln("") // Blank line, for better readability
+	slog.Info("") // Blank line, for better readability
 
 	return keyValue, ""
 }
 
 func (c *Cli) askString(prompt string) (string, error) {
-	cfmt.Infoln(prompt)
+	slog.Info(prompt)
 
 	key := ""
 	fmt.Scanln(&key)
@@ -666,7 +666,7 @@ func (c *Cli) askString(prompt string) (string, error) {
 }
 
 func (c *Cli) askPassword(prompt string) (string, error) {
-	cfmt.Infoln(prompt)
+	slog.Info(prompt)
 
 	passwordBytes, err := term.ReadPassword(int(syscall.Stdin))
 
@@ -720,36 +720,36 @@ func (c *Cli) FindVaultPathFromArgs(args []string) (filePath string, errorMessag
 }
 
 func (c *Cli) Help(_ []string) {
-	cfmt.Infoln("Usage:")
-	cfmt.Infoln(" - init [vaultPath] - Initialize the vault")
-	cfmt.Infoln(" - key-list [vaultPath] - Lists all the keys in the vault")
-	cfmt.Infoln(" - key-remove [vaultPath] - Removes a key from the vault")
-	cfmt.Infoln(" - key-set [vaultPath] - Sets a key in the vault")
-	cfmt.Infoln(" - ui [vaultPath] - Starts the web UI to visually edit the vault")
-	cfmt.Infoln(" - encrypt - Utility function to encrypt a string")
-	cfmt.Infoln(" - decrypt - Utility function to decrypt a string")
-	cfmt.Infoln(" - obfuscate - Utility function to obfuscate a string")
-	cfmt.Infoln(" - deobfuscate - Utility function to deobfuscate a string")
-	cfmt.Infoln(" - help - Show this help")
-	cfmt.Infoln("")
-	cfmt.Infoln("envenc is a tool for managing encrypted environment variables")
-	cfmt.Infoln("it allows you to store and retrieve environment variables in")
-	cfmt.Infoln("a secure password protected vault file")
-	cfmt.Infoln("")
-	cfmt.Infoln("Example:")
-	cfmt.Infoln("$> envenc init .env.vault")
-	cfmt.Infoln("$> envenc key-set .env.vault")
-	cfmt.Infoln("$> envenc key-list .env.vault")
-	cfmt.Infoln("$> envenc key-remove .env.vault")
-	cfmt.Infoln("$> envenc ui .env.vault")
-	cfmt.Infoln("$> envenc encrypt")
-	cfmt.Infoln("$> envenc decrypt")
-	cfmt.Infoln("$> envenc obfuscate")
-	cfmt.Infoln("$> envenc deobfuscate")
-	cfmt.Infoln("")
-	cfmt.Infoln("For more information visit:")
-	cfmt.Infoln("")
-	cfmt.Infoln("https://github.com/dracory/envenc")
+	slog.Info("Usage:")
+	slog.Info(" - init [vaultPath] - Initialize the vault")
+	slog.Info(" - key-list [vaultPath] - Lists all the keys in the vault")
+	slog.Info(" - key-remove [vaultPath] - Removes a key from the vault")
+	slog.Info(" - key-set [vaultPath] - Sets a key in the vault")
+	slog.Info(" - ui [vaultPath] - Starts the web UI to visually edit the vault")
+	slog.Info(" - encrypt - Utility function to encrypt a string")
+	slog.Info(" - decrypt - Utility function to decrypt a string")
+	slog.Info(" - obfuscate - Utility function to obfuscate a string")
+	slog.Info(" - deobfuscate - Utility function to deobfuscate a string")
+	slog.Info(" - help - Show this help")
+	slog.Info("")
+	slog.Info("envenc is a tool for managing encrypted environment variables")
+	slog.Info("it allows you to store and retrieve environment variables in")
+	slog.Info("a secure password protected vault file")
+	slog.Info("")
+	slog.Info("Example:")
+	slog.Info("$> envenc init .env.vault")
+	slog.Info("$> envenc key-set .env.vault")
+	slog.Info("$> envenc key-list .env.vault")
+	slog.Info("$> envenc key-remove .env.vault")
+	slog.Info("$> envenc ui .env.vault")
+	slog.Info("$> envenc encrypt")
+	slog.Info("$> envenc decrypt")
+	slog.Info("$> envenc obfuscate")
+	slog.Info("$> envenc deobfuscate")
+	slog.Info("")
+	slog.Info("For more information visit:")
+	slog.Info("")
+	slog.Info("https://github.com/dracory/envenc")
 }
 
 // Run executes the command

@@ -2,6 +2,7 @@ package envenc
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -11,7 +12,6 @@ import (
 	"github.com/dracory/hb"
 	"github.com/dracory/websrv"
 
-	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
 )
 
@@ -22,7 +22,7 @@ type ui struct {
 func (u *ui) Run(args []string) {
 	mappedArgs := u.argsToMap(args)
 	address := lo.ValueOr(mappedArgs, "address", "127.0.0.1:38080")
-	cfmt.Infoln("Listening on: http://" + address)
+	slog.Info("Listening on: http://" + address)
 
 	s := websrv.New(address, func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(u.router(w, r)))
